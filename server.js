@@ -8,7 +8,8 @@ app.use(cors({
   origin: [
     process.env.FRONTEND_URL, 
     'http://localhost:5173', 
-    'https://asf-frontend-olive.vercel.app'
+    'https://asf-frontend-olive.vercel.app',
+    'https://ai-security-framework-explorer.vercel.app'
   ].filter(Boolean)
 }));
 app.use(express.json());
