@@ -4,7 +4,13 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:5173' }));
+app.use(cors({ 
+  origin: [
+    process.env.FRONTEND_URL, 
+    'http://localhost:5173', 
+    'https://asf-frontend-olive.vercel.app'
+  ].filter(Boolean)
+}));
 app.use(express.json());
 
 // Routes
