@@ -10,10 +10,20 @@ exports.getMany = async (req, res) => {
     if (capabilityId) query.capabilityId = capabilityId;
 
     const controls = await Control.find(query);
+    
+    // Deduplicate controls by controlId
+    const uniqueControlsMap = new Map();
+    controls.forEach(ctrl => {
+      if (!uniqueControlsMap.has(ctrl.controlId)) {
+        uniqueControlsMap.set(ctrl.controlId, ctrl);
+      }
+    });
+    const uniqueControls = Array.from(uniqueControlsMap.values());
+
     res.json({
       success: true,
-      data: controls,
-      meta: { count: controls.length }
+      data: uniqueControls,
+      meta: { count: uniqueControls.length }
     });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message, code: 500 });

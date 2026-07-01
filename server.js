@@ -1,21 +1,25 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
 const frontendUrl = process.env.FRONTEND_URL ? process.env.FRONTEND_URL.replace(/\/$/, '') : null;
 
-app.use(cors({ 
+app.use(cors({
   origin: [
-    frontendUrl, 
-    'http://localhost:5173', 
+    frontendUrl,
+    'http://localhost:5173',
     'https://asf-frontend-olive.vercel.app',
     'https://ai-security-framework-explorer.vercel.app',
     'https://ai-security-framework.vercel.app'
-  ].filter(Boolean)
+  ].filter(Boolean),
+  credentials: true
 }));
 app.use(express.json());
+app.use(cookieParser());
 
 // Routes
 app.use('/api/strategies', require('./routes/strategies'));
@@ -23,6 +27,12 @@ app.use('/api/capabilities', require('./routes/capabilities'));
 app.use('/api/controls', require('./routes/controls'));
 app.use('/api/tools', require('./routes/tools'));
 app.use('/api/search', require('./routes/search'));
+
+// Phase 2 routes
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/evidence', require('./routes/evidence'));
+app.use('/api/dashboard', require('./routes/dashboard'));
+app.use('/api/users', require('./routes/users'));
 
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
