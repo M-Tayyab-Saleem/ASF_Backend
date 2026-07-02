@@ -86,6 +86,21 @@ exports.downloadEvidence = async (req, res) => {
       return res.status(403).json({ success: false, error: 'Access denied', code: 'FORBIDDEN' });
     }
 
+    // Handle Cloudinary / Remote URLs
+    if (evidence.storagePath.startsWith('http')) {
+      const https = require('https');
+      return https.get(evidence.storagePath, (response) => {
+        if (response.statusCode !== 200) {
+          return res.status(response.statusCode).json({ success: false, error: 'Failed to fetch file from remote storage' });
+        }
+        res.setHeader('Content-Disposition', `attachment; filename="${evidence.fileName}"`);
+        res.setHeader('Content-Type', evidence.mimeType || 'application/octet-stream');
+        response.pipe(res);
+      }).on('error', (err) => {
+        return res.status(500).json({ success: false, error: 'Download failed', details: err.message });
+      });
+    }
+
     if (!fs.existsSync(evidence.storagePath)) {
       return res.status(404).json({ success: false, error: 'File not found on disk', code: 'FILE_NOT_FOUND' });
     }

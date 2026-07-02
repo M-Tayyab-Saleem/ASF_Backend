@@ -2,6 +2,14 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 const BLOCKED_EXTENSIONS = new Set([
   '.exe', '.msi', '.bat', '.cmd', '.com', '.scr', '.pif',
@@ -31,20 +39,15 @@ const ALLOWED_MIME_SET = new Set(Object.keys(ALLOWED_MIME_TYPES));
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
-const UPLOAD_DIR = path.join(__dirname, '..', 'uploads', 'evidence');
-
-if (!fs.existsSync(UPLOAD_DIR)) {
-  fs.mkdirSync(UPLOAD_DIR, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, UPLOAD_DIR);
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase();
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req, file) => {
     const uuid = crypto.randomUUID();
-    cb(null, `${uuid}${ext}`);
+    return {
+      folder: 'evidence',
+      public_id: uuid,
+      resource_type: 'auto'
+    };
   }
 });
 
