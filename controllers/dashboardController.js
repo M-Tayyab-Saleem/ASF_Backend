@@ -25,28 +25,28 @@ const buildDashboardData = async (userId = null) => {
   const byStrategy = strategies.map(strategy => {
     const strategyControls = allControls.filter(c => c.strategyId === strategy.strategyId);
     const total = strategyControls.length;
-    const allImplemented = total > 0 && strategyControls.every(c => c.status === 'Implemented');
     return {
       strategyId: strategy.strategyId,
       strategyName: strategy.strategyName,
-      implemented: allImplemented ? 1 : 0,
-      notImplemented: allImplemented ? 0 : 1,
+      implemented: strategyControls.filter(c => c.status === 'Implemented').length,
+      pending: strategyControls.filter(c => c.status === 'Pending' || !c.status).length,
+      notImplemented: strategyControls.filter(c => c.status === 'Not Implemented').length,
       total
     };
-  });
+  }).filter(s => s.total > 0);
 
   const byCapability = capabilities.map(cap => {
     const capControls = allControls.filter(c => c.capabilityId === cap.capabilityId);
     const total = capControls.length;
-    const allImplemented = total > 0 && capControls.every(c => c.status === 'Implemented');
     return {
       capabilityId: cap.capabilityId,
       capabilityName: cap.capabilityName,
-      implemented: allImplemented ? 1 : 0,
-      notImplemented: allImplemented ? 0 : 1,
+      implemented: capControls.filter(c => c.status === 'Implemented').length,
+      pending: capControls.filter(c => c.status === 'Pending' || !c.status).length,
+      notImplemented: capControls.filter(c => c.status === 'Not Implemented').length,
       total
     };
-  });
+  }).filter(c => c.total > 0);
 
   const byControl = allControls.map(c => ({
     controlId: c.controlId,
