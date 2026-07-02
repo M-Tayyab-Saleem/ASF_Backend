@@ -3,11 +3,11 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 const generateToken = (userId) => {
-  return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '24h' });
+  return jwt.sign({ userId }, 'asf_jwt_secret_key_2024_phase2', { expiresIn: '24h' });
 };
 
 const generateRefreshToken = (userId) => {
-  return jwt.sign({ userId }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
+  return jwt.sign({ userId }, 'asf_refresh_secret_key_2024_phase2', { expiresIn: '7d' });
 };
 
 exports.signup = async (req, res) => {
@@ -154,7 +154,7 @@ exports.refreshToken = async (req, res) => {
       return res.status(401).json({ success: false, error: 'Refresh token required', code: 'AUTH_REQUIRED' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+    const decoded = jwt.verify(token, 'asf_refresh_secret_key_2024_phase2');
     const user = await User.findById(decoded.userId).select('-passwordHash');
 
     if (!user) {
