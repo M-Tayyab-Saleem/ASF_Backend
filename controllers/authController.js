@@ -41,8 +41,8 @@ exports.signup = async (req, res) => {
       return res.status(400).json({ success: false, error: 'Password must contain at least one number', code: 'VALIDATION_ERROR' });
     }
 
-    const existingUser = await User.findOne({ email: email.toLowerCase() });
-    if (existingUser) {
+    let existingUser = await User.findOne({ email: email.toLowerCase() });
+    if (existingUser && existingUser.isVerified) {
       return res.status(409).json({ success: false, error: 'Email already registered', code: 'EMAIL_EXISTS' });
     }
 
@@ -52,15 +52,24 @@ exports.signup = async (req, res) => {
     const otp = crypto.randomInt(100000, 999999).toString();
     const otpExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
-    const user = await User.create({
-      fullName: fullName.trim(),
-      email: email.toLowerCase(),
-      passwordHash,
-      role: 'user',
-      isVerified: false,
-      otp,
-      otpExpires
-    });
+    let user;
+    if (existingUser) {
+      existingUser.fullName = fullName.trim();
+      existingUser.passwordHash = passwordHash;
+      existingUser.otp = otp;
+      existingUser.otpExpires = otpExpires;
+      user = await existingUser.save();
+    } else {
+      user = await User.create({
+        fullName: fullName.trim(),
+        email: email.toLowerCase(),
+        passwordHash,
+        role: 'user',
+        isVerified: false,
+        otp,
+        otpExpires
+      });
+    }
 
     // Send the OTP via email
     const emailSent = await sendOTPEmail(user.email, otp);
@@ -96,7 +105,7 @@ exports.login = async (req, res) => {
     }
 
     if (!user.isVerified) {
-      return res.status(403).json({ success: false, error: 'Please verify your email before logging in', code: 'UNVERIFIED_EMAIL', data: { email: user.email } });
+      return res.status(403).json({ success: false, error: 'Please verify your email. If you need a new code, please sign up again to resend it.', code: 'UNVERIFIED_EMAIL', data: { email: user.email } });
     }
 
     const isMatch = await bcrypt.compare(password, user.passwordHash);
