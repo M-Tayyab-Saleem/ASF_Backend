@@ -5,10 +5,10 @@ exports.updateStatus = async (req, res) => {
     const { controlId } = req.params;
     const { status } = req.body;
 
-    if (!['Implemented', 'Not Implemented'].includes(status)) {
+    if (!['Implemented', 'Not Implemented', 'Pending'].includes(status)) {
       return res.status(400).json({
         success: false,
-        error: 'Status must be either "Implemented" or "Not Implemented"',
+        error: 'Status must be "Implemented", "Not Implemented", or "Pending"',
         code: 'VALIDATION_ERROR'
       });
     }
