@@ -1,20 +1,8 @@
-const brevo = require('@getbrevo/brevo');
-
-const defaultClient = brevo.ApiClient.instance;
-const apiKey = defaultClient.authentications['api-key'];
-// Brevo SMTP Key and API Key are typically the same string
-apiKey.apiKey = process.env.BREVO_API_KEY || process.env.BREVO_SMTP_KEY;
-
-const apiInstance = new brevo.TransactionalEmailsApi();
-
 const sendOTPEmail = async (toEmail, otpCode) => {
-  const sendSmtpEmail = new brevo.SendSmtpEmail();
-  
-  sendSmtpEmail.subject = 'Your Verification Code';
-  sendSmtpEmail.sender = { name: 'App Security Framework', email: 'tsaleem@abidisolutions.com' };
-  sendSmtpEmail.to = [{ email: toEmail }];
-  
-  sendSmtpEmail.htmlContent = `
+  const brevoApiKey = process.env.BREVO_API_KEY || process.env.BREVO_SMTP_KEY;
+  const url = 'https://api.brevo.com/v3/smtp/email';
+
+  const htmlContent = `
     <div style="font-family: 'Avenir Next', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px; background-color: #F8FAFC; border-radius: 12px;">
       <div style="background-color: #FFFFFF; padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); text-align: center;">
         <h1 style="color: #0D1514; font-size: 24px; font-weight: 700; margin-bottom: 8px;">Verify Your Email</h1>
@@ -31,12 +19,35 @@ const sendOTPEmail = async (toEmail, otpCode) => {
     </div>
   `;
 
+  const payload = {
+    sender: { name: 'App Security Framework', email: 'tsaleem@abidisolutions.com' },
+    to: [{ email: toEmail }],
+    subject: 'Your Verification Code',
+    htmlContent: htmlContent
+  };
+
   try {
-    const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
-    console.log('API called successfully. Message ID:', data.messageId);
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'api-key': brevoApiKey,
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Brevo API Error:', errorText);
+      return false;
+    }
+    
+    const data = await response.json();
+    console.log('Message sent via API successfully. Message ID:', data.messageId);
     return true;
   } catch (error) {
-    console.error('Error sending email via Brevo SDK:', error);
+    console.error('Error sending email via Brevo API:', error);
     return false;
   }
 };
