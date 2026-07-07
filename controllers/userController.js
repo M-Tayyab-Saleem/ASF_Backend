@@ -16,7 +16,7 @@ exports.updateUserRole = async (req, res) => {
     const user = await User.findByIdAndUpdate(
       userId,
       { role, updatedAt: new Date() },
-      { new: true }
+      { returnDocument: 'after' }
     ).select('-passwordHash');
 
     if (!user) {
@@ -31,6 +31,24 @@ exports.updateUserRole = async (req, res) => {
         email: user.email,
         role: user.role
       }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message, code: 500 });
+  }
+};
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().select('-passwordHash').sort({ createdAt: -1 });
+    res.json({
+      success: true,
+      data: users.map(u => ({
+        id: u._id,
+        fullName: u.fullName,
+        email: u.email,
+        role: u.role,
+        createdAt: u.createdAt
+      }))
     });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message, code: 500 });

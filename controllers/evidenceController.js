@@ -32,10 +32,21 @@ exports.uploadEvidence = async (req, res) => {
 
     const populated = await Evidence.findById(evidence._id).populate('uploadedBy', 'fullName email');
 
-    res.status(201).json({
-      success: true,
-      data: populated
-    });
+    // ── Phase 3: auto-advance lifecycle Implemented → Evidence Added ──────
+    if (control.lifecycleStage === 'Implemented') {
+      control.lifecycleStage = 'Evidence Added';
+      control.lifecycleHistory = control.lifecycleHistory || [];
+      control.lifecycleHistory.push({
+        stage:     'Evidence Added',
+        changedBy: req.user._id,
+        changedAt: new Date(),
+        reason:    'Auto-advanced on first evidence upload'
+      });
+      control.updatedAt = new Date();
+      await control.save();
+    }
+
+    res.status(201).json({ success: true, data: populated });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message, code: 500 });
   }

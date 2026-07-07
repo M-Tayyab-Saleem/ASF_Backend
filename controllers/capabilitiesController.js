@@ -9,7 +9,24 @@ exports.getByStrategy = async (req, res) => {
     if (!strategyId) {
       return res.status(400).json({ success: false, error: 'strategyId query param is required', code: 400 });
     }
-    const capabilities = await Capability.find({ strategyId });
+    const capabilities = await Capability.find({ strategyId }).lean();
+    
+    // Calculate progress for each capability
+    const allControls = await Control.find({ strategyId }).lean();
+    
+    for (let cap of capabilities) {
+      const capControls = allControls.filter(c => c.capabilityId === cap.capabilityId);
+      const total = capControls.length;
+      let implemented = 0;
+      capControls.forEach(c => {
+         if (['Implemented', 'Evidence Added', 'Validated', 'Review'].includes(c.lifecycleStage)) {
+           implemented++;
+         }
+      });
+      cap.progress = total > 0 ? Math.round((implemented / total) * 100) : null;
+      cap.totalControls = total;
+    }
+
     res.json({
       success: true,
       data: capabilities,

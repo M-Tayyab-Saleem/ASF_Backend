@@ -34,6 +34,11 @@ app.use('/api/evidence', require('./routes/evidence'));
 app.use('/api/dashboard', require('./routes/dashboard'));
 app.use('/api/users', require('./routes/users'));
 
+// Phase 3 routes
+app.use('/api/invites', require('./routes/invites'));
+app.use('/api/owners', require('./routes/owners'));
+app.use('/api/tool-mappings', require('./routes/toolMappings'));
+
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     app.listen(process.env.PORT || 5000, () => {

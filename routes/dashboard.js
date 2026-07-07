@@ -8,4 +8,9 @@ router.get('/user/:userId', requireAuth, requireAdmin, dashboardController.getUs
 router.get('/all', requireAuth, requireAdmin, dashboardController.getAllDashboard);
 router.get('/users', requireAuth, requireAdmin, dashboardController.getUsers);
 
+router.get('/implementation-progress', requireAuth, dashboardController.getImplementationProgress);
+router.get('/implementation-trend', requireAuth, dashboardController.getImplementationTrend);
+router.get('/top-risk-areas', requireAuth, dashboardController.getTopRiskAreas);
+router.get('/recent-evidence', requireAuth, dashboardController.getRecentEvidence);
+
 module.exports = router;
