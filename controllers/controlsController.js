@@ -89,7 +89,7 @@ exports.suggestId = async (req, res) => {
 // ── POST /api/controls ───────────────────────────────────────────────────────
 exports.createControl = async (req, res) => {
   try {
-    let { controlId, title, description, category, riskLevel, capabilityId, strategyId, ownerId, linkedTools } = req.body;
+    let { controlId, title, description, category, riskLevel, capabilityId, strategyId, ownerId, linkedTools, notes } = req.body;
 
     // Required field validation
     if (!title)       return res.status(400).json({ success: false, error: 'title is required',       code: 'VALIDATION_ERROR' });
@@ -120,6 +120,7 @@ exports.createControl = async (req, res) => {
       title,
       description,
       category,
+      notes: notes || '',
       riskLevel,
       capabilityId,
       strategyId: strategyId || '',
@@ -152,7 +153,7 @@ exports.updateControl = async (req, res) => {
       return res.status(404).json({ success: false, error: 'Control not found', code: 404 });
     }
 
-    const allowedFields = ['title', 'description', 'category', 'riskLevel', 'capabilityId', 'strategyId', 'ownerId', 'linkedTools'];
+    const allowedFields = ['title', 'description', 'category', 'riskLevel', 'capabilityId', 'strategyId', 'ownerId', 'linkedTools', 'notes'];
     for (const field of allowedFields) {
       if (req.body[field] !== undefined) {
         control[field] = req.body[field];

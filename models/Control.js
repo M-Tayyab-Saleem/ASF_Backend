@@ -29,6 +29,7 @@ const controlSchema = new mongoose.Schema({
   title:       { type: String },   // preferred alias for controlName
   description: { type: String },   // preferred alias for controlDescription
   category:    { type: String },   // preferred alias for controlDomain
+  notes:       { type: String },   // User notes for the control
 
   riskLevel:   { type: String, enum: ['Low', 'Medium', 'High', null], default: null },
 

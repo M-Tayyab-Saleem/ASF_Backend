@@ -156,6 +156,29 @@ exports.setEffectiveness = async (req, res) => {
   }
 };
 
+// ── DELETE /api/tools/:id ───────────────────────────────────────────────────
+exports.deleteTool = async (req, res) => {
+  try {
+    const query = mongoose.isValidObjectId(req.params.id) 
+        ? { _id: req.params.id }
+        : { toolId: req.params.id };
+
+    const tool = await Tool.findOne(query);
+    if (!tool) {
+      return res.status(404).json({ success: false, error: 'Tool not found', code: 404 });
+    }
+
+    await Tool.deleteOne(query);
+    
+    // Also remove mappings
+    await Phase3ToolControlMapping.deleteMany({ toolId: tool._id });
+
+    res.json({ success: true, data: { message: 'Tool deleted successfully' } });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message, code: 500 });
+  }
+};
+
 // ── GET /api/tools/categories ───────────────────────────────────────────────
 exports.getCategories = (req, res) => {
     res.json({ success: true, data: TOOL_CATEGORIES });

@@ -12,5 +12,6 @@ router.get('/:id', toolsController.getOne);
 router.post('/', requireAuth, requireAdmin, toolsController.createTool);
 router.put('/:id', requireAuth, requireAdmin, toolsController.updateTool);
 router.patch('/:id/effectiveness', requireAuth, requireAdmin, toolsController.setEffectiveness);
+router.delete('/:id', requireAuth, requireAdmin, toolsController.deleteTool);
 
 module.exports = router;
