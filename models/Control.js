@@ -8,6 +8,12 @@ const lifecycleEntrySchema = new mongoose.Schema({
   reason:    { type: String, default: null }
 }, { _id: false });
 
+const noteSchema = new mongoose.Schema({
+  text:      { type: String, required: true },
+  addedBy:   { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  addedAt:   { type: Date, default: Date.now }
+}, { _id: true });
+
 // ── Main Control schema ───────────────────────────────────────────────────────
 const controlSchema = new mongoose.Schema({
   // ── Legacy fields (preserved for backward compat) ──
@@ -29,7 +35,7 @@ const controlSchema = new mongoose.Schema({
   title:       { type: String },   // preferred alias for controlName
   description: { type: String },   // preferred alias for controlDescription
   category:    { type: String },   // preferred alias for controlDomain
-  notes:       { type: String },   // User notes for the control
+  notes:       { type: [noteSchema], default: [] }, // Thread of notes
 
   riskLevel:   { type: String, enum: ['Low', 'Medium', 'High', null], default: null },
 

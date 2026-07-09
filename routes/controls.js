@@ -12,11 +12,12 @@ router.get('/',                                              controlsController.
 router.get('/:id/history',        requireAuth,              controlsController.getLifecycleHistory);
 router.get('/:id',                                          controlsController.getOne);
 
-// ── Write routes (Admin only) ─────────────────────────────────────────────────
+// ── Write routes (Admin only for controls, Any user for notes) ────────────────
 router.post('/',                  requireAuth, requireAdmin, controlsController.createControl);
 router.put('/:controlId',         requireAuth, requireAdmin, controlsController.updateControl);
 router.patch('/:controlId/lifecycle', requireAuth, requireAdmin, controlsController.updateLifecycle);
 router.patch('/:controlId/at-risk',   requireAuth, requireAdmin, controlsController.toggleAtRisk);
+router.post('/:controlId/notes',      requireAuth,               controlsController.addNote);
 
 // ── Legacy status patch (backward compat — keep until deprecated) ─────────────
 router.patch('/:controlId/status', requireAuth, requireAdmin, statusController.updateStatus);

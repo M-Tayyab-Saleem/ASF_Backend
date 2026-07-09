@@ -54,6 +54,7 @@ exports.getOne = async (req, res) => {
     const control = await Control
       .findOne({ controlId: req.params.id })
       .populate('ownerId', 'fullName email businessUnit')
+      .populate('notes.addedBy', 'fullName email')
       .lean();
 
     if (!control) {
@@ -334,6 +335,37 @@ exports.getControlsByCategory = async (req, res) => {
       success: true,
       data: Object.values(byCategory).sort((a, b) => b.count - a.count)
     });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message, code: 500 });
+  }
+};
+
+// ── POST /api/controls/:controlId/notes ─────────────────────────────────────
+exports.addNote = async (req, res) => {
+  try {
+    const { text } = req.body;
+    if (!text || !text.trim()) {
+      return res.status(400).json({ success: false, error: 'Note text is required', code: 'VALIDATION_ERROR' });
+    }
+
+    const control = await Control.findOne({ controlId: req.params.controlId });
+    if (!control) {
+      return res.status(404).json({ success: false, error: 'Control not found', code: 404 });
+    }
+
+    const newNote = {
+      text: text.trim(),
+      addedBy: req.user._id,
+      addedAt: new Date()
+    };
+
+    control.notes.push(newNote);
+    await control.save();
+    
+    // Repopulate just added note
+    await control.populate('notes.addedBy', 'fullName email');
+    
+    res.status(201).json({ success: true, data: control.notes[control.notes.length - 1] });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message, code: 500 });
   }
