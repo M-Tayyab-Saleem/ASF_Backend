@@ -18,6 +18,8 @@ router.put('/:controlId',         requireAuth, requireAdmin, controlsController.
 router.patch('/:controlId/lifecycle', requireAuth, requireAdmin, controlsController.updateLifecycle);
 router.patch('/:controlId/at-risk',   requireAuth, requireAdmin, controlsController.toggleAtRisk);
 router.post('/:controlId/notes',      requireAuth,               controlsController.addNote);
+router.put('/:controlId/notes/:noteId', requireAuth,              controlsController.updateNote);
+router.delete('/:controlId/notes/:noteId', requireAuth,           controlsController.deleteNote);
 
 // ── Legacy status patch (backward compat — keep until deprecated) ─────────────
 router.patch('/:controlId/status', requireAuth, requireAdmin, statusController.updateStatus);

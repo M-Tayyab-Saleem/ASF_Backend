@@ -381,3 +381,64 @@ exports.addNote = async (req, res) => {
     res.status(500).json({ success: false, error: error.message, code: 500 });
   }
 };
+
+// ── PUT /api/controls/:controlId/notes/:noteId ─────────────────────────────
+exports.updateNote = async (req, res) => {
+  try {
+    const { text } = req.body;
+    if (!text || !text.trim()) {
+      return res.status(400).json({ success: false, error: 'Note text is required', code: 'VALIDATION_ERROR' });
+    }
+
+    const control = await Control.findOne({ controlId: req.params.controlId });
+    if (!control) {
+      return res.status(404).json({ success: false, error: 'Control not found', code: 404 });
+    }
+
+    const note = control.notes.id(req.params.noteId);
+    if (!note) {
+      return res.status(404).json({ success: false, error: 'Note not found', code: 404 });
+    }
+
+    // Only creator or admin can edit
+    if (note.addedBy.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+      return res.status(403).json({ success: false, error: 'Not authorized to edit this note', code: 403 });
+    }
+
+    note.text = text.trim();
+    await control.save();
+
+    await control.populate('notes.addedBy', 'fullName email');
+
+    res.json({ success: true, data: control.notes.id(req.params.noteId) });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message, code: 500 });
+  }
+};
+
+// ── DELETE /api/controls/:controlId/notes/:noteId ──────────────────────────
+exports.deleteNote = async (req, res) => {
+  try {
+    const control = await Control.findOne({ controlId: req.params.controlId });
+    if (!control) {
+      return res.status(404).json({ success: false, error: 'Control not found', code: 404 });
+    }
+
+    const note = control.notes.id(req.params.noteId);
+    if (!note) {
+      return res.status(404).json({ success: false, error: 'Note not found', code: 404 });
+    }
+
+    // Only creator or admin can delete
+    if (note.addedBy.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+      return res.status(403).json({ success: false, error: 'Not authorized to delete this note', code: 403 });
+    }
+
+    control.notes.pull(req.params.noteId);
+    await control.save();
+
+    res.json({ success: true, message: 'Note deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message, code: 500 });
+  }
+};

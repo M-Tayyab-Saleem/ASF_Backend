@@ -93,3 +93,32 @@ exports.removeMapping = async (req, res) => {
     res.status(500).json({ success: false, error: error.message, code: 500 });
   }
 };
+
+// ── DELETE /api/tool-mappings?toolId=...&controlId=... ─────────────────────
+exports.removeMappingByToolAndControl = async (req, res) => {
+  try {
+    const { toolId, controlId } = req.query;
+    if (!toolId || !controlId) {
+      return res.status(400).json({ success: false, error: 'toolId and controlId are required', code: 'VALIDATION_ERROR' });
+    }
+
+    const mapping = await Phase3ToolControlMapping.findOne({ toolId, controlId });
+    if (mapping) {
+      await Phase3ToolControlMapping.findByIdAndDelete(mapping._id);
+    }
+
+    // Update Control's linkedTools array
+    const control = await Control.findById(controlId);
+    if (control) {
+        control.linkedTools = control.linkedTools.filter(tId => tId.toString() !== toolId.toString());
+        await control.save();
+    }
+
+    // Recalculate Tool Coverage
+    const coverageScore = await recalculateCoverage(toolId);
+
+    res.json({ success: true, data: { message: 'Mapping removed', coverageScore } });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message, code: 500 });
+  }
+};

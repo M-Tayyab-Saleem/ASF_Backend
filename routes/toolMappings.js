@@ -9,5 +9,6 @@ router.get('/', requireAuth, toolMappingController.getMappings);
 // Admin only
 router.post('/', requireAuth, requireAdmin, toolMappingController.addMapping);
 router.delete('/:id', requireAuth, requireAdmin, toolMappingController.removeMapping);
+router.delete('/', requireAuth, requireAdmin, toolMappingController.removeMappingByToolAndControl);
 
 module.exports = router;
