@@ -1,6 +1,7 @@
 const Control = require('../models/Control');
 const ControlToolMapping = require('../models/ControlToolMapping');
 const Tool = require('../models/Tool');
+const Phase3ToolControlMapping = require('../models/Phase3ToolControlMapping');
 
 // ── Lifecycle stage order ─────────────────────────────────────────────────────
 const STAGES = ['Defined', 'Implemented', 'Evidence Added', 'Validated', 'Review'];
@@ -64,8 +65,18 @@ exports.getOne = async (req, res) => {
     // Attach legacy tools via old string-key mapping (backward compat)
     const mappings = await ControlToolMapping.find({ controlId: req.params.id });
     const toolIds  = mappings.map(m => m.toolId);
-    const tools    = await Tool.find({ toolId: { $in: toolIds } });
-    control.tools  = tools;
+    const legacyTools = await Tool.find({ toolId: { $in: toolIds } }).lean();
+
+    // Attach Phase 3 tools
+    const p3Mappings = await Phase3ToolControlMapping.find({ controlId: control._id });
+    const p3ToolIds = p3Mappings.map(m => m.toolId);
+    const p3Tools = await Tool.find({ _id: { $in: p3ToolIds } }).lean();
+
+    // Merge and deduplicate by _id
+    const allTools = [...legacyTools, ...p3Tools];
+    const uniqueToolsMap = new Map();
+    allTools.forEach(t => uniqueToolsMap.set(t._id.toString(), t));
+    control.tools = Array.from(uniqueToolsMap.values());
 
     res.json({ success: true, data: control, meta: { count: 1 } });
   } catch (error) {
