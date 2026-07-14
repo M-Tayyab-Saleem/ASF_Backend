@@ -38,6 +38,7 @@ app.use('/api/users', require('./routes/users'));
 app.use('/api/invites', require('./routes/invites'));
 app.use('/api/owners', require('./routes/owners'));
 app.use('/api/tool-mappings', require('./routes/toolMappings'));
+app.use('/api/capability-tool-mappings', require('./routes/capabilityToolMappings'));
 
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {

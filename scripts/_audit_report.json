@@ -1,0 +1,484 @@
+{
+  "missingStrategies": [],
+  "missingCapabilities": [],
+  "wrongCapStrategyId": [
+    {
+      "capabilityId": "CAP-032",
+      "dbStrategyId": "RG",
+      "xlsxStrategyId": "RAG",
+      "name": "RAG prompt injection detection"
+    },
+    {
+      "capabilityId": "CAP-033",
+      "dbStrategyId": "RG",
+      "xlsxStrategyId": "RAG",
+      "name": "Document poisoning detection"
+    },
+    {
+      "capabilityId": "CAP-034",
+      "dbStrategyId": "RG",
+      "xlsxStrategyId": "RAG",
+      "name": "Knowledge base integrity checks"
+    },
+    {
+      "capabilityId": "CAP-035",
+      "dbStrategyId": "RG",
+      "xlsxStrategyId": "RAG",
+      "name": "Retrieval access control"
+    },
+    {
+      "capabilityId": "CAP-036",
+      "dbStrategyId": "RG",
+      "xlsxStrategyId": "RAG",
+      "name": "Secure document ingestion"
+    },
+    {
+      "capabilityId": "CAP-037",
+      "dbStrategyId": "RG",
+      "xlsxStrategyId": "RAG",
+      "name": "Retrieval policy enforcement"
+    },
+    {
+      "capabilityId": "CAP-038",
+      "dbStrategyId": "RG",
+      "xlsxStrategyId": "RAG",
+      "name": "RAG output validation"
+    },
+    {
+      "capabilityId": "CAP-039",
+      "dbStrategyId": "RG",
+      "xlsxStrategyId": "RAG",
+      "name": "RAG audit logging"
+    }
+  ],
+  "missingControls": [],
+  "wrongControlStrategy": [
+    {
+      "controlId": "RG-01",
+      "dbStrategyId": "RG",
+      "xlsxStrategyId": "RAG"
+    },
+    {
+      "controlId": "RG-02",
+      "dbStrategyId": "RG",
+      "xlsxStrategyId": "RAG"
+    },
+    {
+      "controlId": "RG-03",
+      "dbStrategyId": "RG",
+      "xlsxStrategyId": "RAG"
+    },
+    {
+      "controlId": "RG-04",
+      "dbStrategyId": "RG",
+      "xlsxStrategyId": "RAG"
+    },
+    {
+      "controlId": "RG-05",
+      "dbStrategyId": "RG",
+      "xlsxStrategyId": "RAG"
+    },
+    {
+      "controlId": "RG-06",
+      "dbStrategyId": "RG",
+      "xlsxStrategyId": "RAG"
+    },
+    {
+      "controlId": "RG-07",
+      "dbStrategyId": "RG",
+      "xlsxStrategyId": "RAG"
+    },
+    {
+      "controlId": "RG-08",
+      "dbStrategyId": "RG",
+      "xlsxStrategyId": "RAG"
+    },
+    {
+      "controlId": "RG-09",
+      "dbStrategyId": "RG",
+      "xlsxStrategyId": "RAG"
+    },
+    {
+      "controlId": "RG-10",
+      "dbStrategyId": "RG",
+      "xlsxStrategyId": "RAG"
+    },
+    {
+      "controlId": "RG-11",
+      "dbStrategyId": "RG",
+      "xlsxStrategyId": "RAG"
+    },
+    {
+      "controlId": "RG-12",
+      "dbStrategyId": "RG",
+      "xlsxStrategyId": "RAG"
+    },
+    {
+      "controlId": "AS-12",
+      "dbStrategyId": "AG",
+      "xlsxStrategyId": "AS"
+    },
+    {
+      "controlId": "GS-10",
+      "dbStrategyId": "IA",
+      "xlsxStrategyId": "AG"
+    },
+    {
+      "controlId": "IS-02",
+      "dbStrategyId": "GC",
+      "xlsxStrategyId": "IA"
+    },
+    {
+      "controlId": "IS-09",
+      "dbStrategyId": "GC",
+      "xlsxStrategyId": "IA"
+    },
+    {
+      "controlId": "GC-06",
+      "dbStrategyId": "GC",
+      "xlsxStrategyId": "MO"
+    },
+    {
+      "controlId": "GC-07",
+      "dbStrategyId": "GC",
+      "xlsxStrategyId": "MO"
+    },
+    {
+      "controlId": "GC-08",
+      "dbStrategyId": "GC",
+      "xlsxStrategyId": "MO"
+    },
+    {
+      "controlId": "GC-09",
+      "dbStrategyId": "GC",
+      "xlsxStrategyId": "MO"
+    },
+    {
+      "controlId": "GC-10",
+      "dbStrategyId": "GC",
+      "xlsxStrategyId": "MO"
+    },
+    {
+      "controlId": "GC-11",
+      "dbStrategyId": "GC",
+      "xlsxStrategyId": "MO"
+    },
+    {
+      "controlId": "GC-12",
+      "dbStrategyId": "GC",
+      "xlsxStrategyId": "MO"
+    },
+    {
+      "controlId": "MT-06",
+      "dbStrategyId": "MO",
+      "xlsxStrategyId": "SA"
+    },
+    {
+      "controlId": "MT-07",
+      "dbStrategyId": "MO",
+      "xlsxStrategyId": "SA"
+    },
+    {
+      "controlId": "MT-08",
+      "dbStrategyId": "MO",
+      "xlsxStrategyId": "SA"
+    },
+    {
+      "controlId": "MT-09",
+      "dbStrategyId": "MO",
+      "xlsxStrategyId": "SA"
+    },
+    {
+      "controlId": "MT-10",
+      "dbStrategyId": "MO",
+      "xlsxStrategyId": "SA"
+    },
+    {
+      "controlId": "MT-11",
+      "dbStrategyId": "MO",
+      "xlsxStrategyId": "SA"
+    },
+    {
+      "controlId": "MT-12",
+      "dbStrategyId": "TD",
+      "xlsxStrategyId": "MO"
+    },
+    {
+      "controlId": "MT-14",
+      "dbStrategyId": "TD",
+      "xlsxStrategyId": "MO"
+    },
+    {
+      "controlId": "SD-01",
+      "dbStrategyId": "SA",
+      "xlsxStrategyId": "TD"
+    },
+    {
+      "controlId": "SD-02",
+      "dbStrategyId": "SA",
+      "xlsxStrategyId": "TD"
+    },
+    {
+      "controlId": "SD-03",
+      "dbStrategyId": "SA",
+      "xlsxStrategyId": "TD"
+    },
+    {
+      "controlId": "SD-04",
+      "dbStrategyId": "SA",
+      "xlsxStrategyId": "TD"
+    },
+    {
+      "controlId": "SD-05",
+      "dbStrategyId": "SA",
+      "xlsxStrategyId": "TD"
+    },
+    {
+      "controlId": "SD-06",
+      "dbStrategyId": "SA",
+      "xlsxStrategyId": "TD"
+    }
+  ],
+  "wrongControlCap": [
+    {
+      "controlId": "PS-03",
+      "dbCapabilityId": "CAP-002",
+      "xlsxCapabilityId": "CAP-001"
+    },
+    {
+      "controlId": "PS-04",
+      "dbCapabilityId": "CAP-002",
+      "xlsxCapabilityId": "CAP-001"
+    },
+    {
+      "controlId": "PS-07",
+      "dbCapabilityId": "CAP-007",
+      "xlsxCapabilityId": "CAP-004"
+    },
+    {
+      "controlId": "PS-08",
+      "dbCapabilityId": "CAP-009",
+      "xlsxCapabilityId": "CAP-001"
+    },
+    {
+      "controlId": "PS-09",
+      "dbCapabilityId": "CAP-008",
+      "xlsxCapabilityId": "CAP-002"
+    },
+    {
+      "controlId": "PS-10",
+      "dbCapabilityId": "CAP-005",
+      "xlsxCapabilityId": "CAP-001"
+    },
+    {
+      "controlId": "PS-12",
+      "dbCapabilityId": "CAP-002",
+      "xlsxCapabilityId": "CAP-001"
+    },
+    {
+      "controlId": "RS-03",
+      "dbCapabilityId": "CAP-013",
+      "xlsxCapabilityId": "CAP-011"
+    },
+    {
+      "controlId": "RS-04",
+      "dbCapabilityId": "CAP-013",
+      "xlsxCapabilityId": "CAP-011"
+    },
+    {
+      "controlId": "RS-06",
+      "dbCapabilityId": "CAP-015",
+      "xlsxCapabilityId": "CAP-014"
+    },
+    {
+      "controlId": "RS-10",
+      "dbCapabilityId": "CAP-017",
+      "xlsxCapabilityId": "CAP-011"
+    },
+    {
+      "controlId": "DS-06",
+      "dbCapabilityId": "CAP-027",
+      "xlsxCapabilityId": "CAP-026"
+    },
+    {
+      "controlId": "RG-02",
+      "dbCapabilityId": "CAP-036",
+      "xlsxCapabilityId": "CAP-033"
+    },
+    {
+      "controlId": "RG-03",
+      "dbCapabilityId": "CAP-036",
+      "xlsxCapabilityId": "CAP-033"
+    },
+    {
+      "controlId": "RG-12",
+      "dbCapabilityId": "CAP-039",
+      "xlsxCapabilityId": "CAP-034"
+    },
+    {
+      "controlId": "MS-01",
+      "dbCapabilityId": "CAP-045",
+      "xlsxCapabilityId": "CAP-040"
+    },
+    {
+      "controlId": "MS-02",
+      "dbCapabilityId": "CAP-045",
+      "xlsxCapabilityId": "CAP-041"
+    },
+    {
+      "controlId": "MS-03",
+      "dbCapabilityId": "CAP-045",
+      "xlsxCapabilityId": "CAP-040"
+    },
+    {
+      "controlId": "MS-06",
+      "dbCapabilityId": "CAP-044",
+      "xlsxCapabilityId": "CAP-043"
+    },
+    {
+      "controlId": "MS-12",
+      "dbCapabilityId": "CAP-045",
+      "xlsxCapabilityId": "CAP-044"
+    },
+    {
+      "controlId": "AS-02",
+      "dbCapabilityId": "CAP-052",
+      "xlsxCapabilityId": "CAP-051"
+    },
+    {
+      "controlId": "AS-12",
+      "dbCapabilityId": "CAP-061",
+      "xlsxCapabilityId": "CAP-054"
+    },
+    {
+      "controlId": "GS-03",
+      "dbCapabilityId": "CAP-067",
+      "xlsxCapabilityId": "CAP-065"
+    },
+    {
+      "controlId": "GS-10",
+      "dbCapabilityId": "CAP-071",
+      "xlsxCapabilityId": "CAP-063"
+    },
+    {
+      "controlId": "IS-02",
+      "dbCapabilityId": "CAP-080",
+      "xlsxCapabilityId": "CAP-073"
+    },
+    {
+      "controlId": "IS-09",
+      "dbCapabilityId": "CAP-080",
+      "xlsxCapabilityId": "CAP-077"
+    },
+    {
+      "controlId": "GC-06",
+      "dbCapabilityId": "CAP-082",
+      "xlsxCapabilityId": "CAP-087"
+    },
+    {
+      "controlId": "GC-07",
+      "dbCapabilityId": "CAP-082",
+      "xlsxCapabilityId": "CAP-087"
+    },
+    {
+      "controlId": "GC-08",
+      "dbCapabilityId": "CAP-079",
+      "xlsxCapabilityId": "CAP-088"
+    },
+    {
+      "controlId": "GC-09",
+      "dbCapabilityId": "CAP-084",
+      "xlsxCapabilityId": "CAP-089"
+    },
+    {
+      "controlId": "GC-10",
+      "dbCapabilityId": "CAP-078",
+      "xlsxCapabilityId": "CAP-090"
+    },
+    {
+      "controlId": "GC-11",
+      "dbCapabilityId": "CAP-078",
+      "xlsxCapabilityId": "CAP-091"
+    },
+    {
+      "controlId": "GC-12",
+      "dbCapabilityId": "CAP-078",
+      "xlsxCapabilityId": "CAP-090"
+    },
+    {
+      "controlId": "MT-06",
+      "dbCapabilityId": "CAP-090",
+      "xlsxCapabilityId": "CAP-097"
+    },
+    {
+      "controlId": "MT-07",
+      "dbCapabilityId": "CAP-092",
+      "xlsxCapabilityId": "CAP-098"
+    },
+    {
+      "controlId": "MT-08",
+      "dbCapabilityId": "CAP-094",
+      "xlsxCapabilityId": "CAP-099"
+    },
+    {
+      "controlId": "MT-09",
+      "dbCapabilityId": "CAP-095",
+      "xlsxCapabilityId": "CAP-099"
+    },
+    {
+      "controlId": "MT-10",
+      "dbCapabilityId": "CAP-094",
+      "xlsxCapabilityId": "CAP-099"
+    },
+    {
+      "controlId": "MT-11",
+      "dbCapabilityId": "CAP-094",
+      "xlsxCapabilityId": "CAP-102"
+    },
+    {
+      "controlId": "MT-12",
+      "dbCapabilityId": "CAP-103",
+      "xlsxCapabilityId": "CAP-095"
+    },
+    {
+      "controlId": "MT-14",
+      "dbCapabilityId": "CAP-104",
+      "xlsxCapabilityId": "CAP-092"
+    },
+    {
+      "controlId": "SD-01",
+      "dbCapabilityId": "CAP-097",
+      "xlsxCapabilityId": "CAP-105"
+    },
+    {
+      "controlId": "SD-02",
+      "dbCapabilityId": "CAP-098",
+      "xlsxCapabilityId": "CAP-106"
+    },
+    {
+      "controlId": "SD-03",
+      "dbCapabilityId": "CAP-099",
+      "xlsxCapabilityId": "CAP-105"
+    },
+    {
+      "controlId": "SD-04",
+      "dbCapabilityId": "CAP-100",
+      "xlsxCapabilityId": "CAP-107"
+    },
+    {
+      "controlId": "SD-05",
+      "dbCapabilityId": "CAP-101",
+      "xlsxCapabilityId": "CAP-105"
+    },
+    {
+      "controlId": "SD-06",
+      "dbCapabilityId": "CAP-102",
+      "xlsxCapabilityId": "CAP-106"
+    }
+  ],
+  "wrongControlName": [],
+  "missingToolMappings": [],
+  "duplicateControls": [],
+  "stringNotesControls": [],
+  "missingTools": []
+}

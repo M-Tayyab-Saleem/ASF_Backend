@@ -6,13 +6,14 @@ const Tool = require('../models/Tool');
 exports.getByStrategy = async (req, res) => {
   try {
     const { strategyId } = req.query;
-    if (!strategyId) {
-      return res.status(400).json({ success: false, error: 'strategyId query param is required', code: 400 });
+    const query = {};
+    if (strategyId) {
+      query.strategyId = strategyId;
     }
-    const capabilities = await Capability.find({ strategyId }).lean();
+    const capabilities = await Capability.find(query).lean();
     
     // Calculate progress for each capability
-    const allControls = await Control.find({ strategyId }).lean();
+    const allControls = await Control.find(query).lean();
     
     for (let cap of capabilities) {
       const capControls = allControls.filter(c => c.capabilityId === cap.capabilityId);
@@ -47,12 +48,25 @@ exports.getOne = async (req, res) => {
 
     const controls = await Control.find({ capabilityId }).lean();
     
-    // Hydrate tools
+    // Hydrate tools mapped directly to capability
+    const CapabilityToolMapping = require('../models/CapabilityToolMapping');
+    const mappings = await CapabilityToolMapping.find({ capabilityId: capability._id });
+    const toolIds = mappings.map(m => m.toolId);
+    const tools = await Tool.find({ _id: { $in: toolIds } });
+    capability.tools = tools;
+    
+    // Legacy: hydrate tools on controls
     for (let control of controls) {
-      const mappings = await ControlToolMapping.find({ controlId: control.controlId });
-      const toolIds = mappings.map(m => m.toolId);
-      const tools = await Tool.find({ toolId: { $in: toolIds } });
-      control.tools = tools;
+      const cMappings = await ControlToolMapping.find({ controlId: control.controlId });
+      const cToolIds = cMappings.map(m => m.toolId);
+      const cTools = await Tool.find({ toolId: { $in: cToolIds } });
+      
+      const Phase3ToolControlMapping = require('../models/Phase3ToolControlMapping');
+      const p3Mappings = await Phase3ToolControlMapping.find({ controlId: control._id });
+      const p3ToolIds = p3Mappings.map(m => m.toolId);
+      const p3Tools = await Tool.find({ _id: { $in: p3ToolIds } }).lean();
+      
+      control.tools = [...cTools, ...p3Tools];
     }
     
     capability.controls = controls;

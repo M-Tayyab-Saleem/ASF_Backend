@@ -8,6 +8,7 @@ const capabilitySchema = new mongoose.Schema({
   capabilityStatus: { type: String },
   strategyId: { type: String, required: true, index: true },
   controlCount: { type: Number, default: 0 },
+  linkedTools: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tool' }],
   createdAt: { type: Date, default: Date.now }
 });
 
